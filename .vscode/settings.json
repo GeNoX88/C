@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "9-23.C": "cpp",
-        "stdlib.h": "c"
-    }
+        "stdlib.h": "c",
+        "typeinfo": "c"
+    },
+    "C_Cpp.errorSquiggles": "Disabled"
 }
