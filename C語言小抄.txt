@@ -1,0 +1,9 @@
+char a[5]; printf("%s", a); 會印出遇到'\0'前的所有字元，如果沒遇到'\0'則會印到遇到不可列印字元為止
+空字元'\0'的ASCII code為0
+'0'~'9'的ASCII code為48~57
+itoa()轉換數字成字串給變數 沒滿的地方會填入'\0'
+atoi()會不斷偵測引數(字串或其位址)的數字字符，直到遇到非數字字符為止，而不依賴引數的記憶體空間做中止的判斷
+fopen搭配"w"和"a"後綴能自動建立新檔，搭配"r"則不會
+strcpy(str, "hello") 會把"hello"拷貝進str所在位址，而且是可以拷貝超過str宣告的記憶體長度
+strncpy(str, "hello", cnt) 會把"hello"中前cnt個字拷貝進str所在位址，不滿的全填上'\0'，字串跟cnt太長會使拷貝超過str宣告的記憶體長度
+int *a = (int *)malloc(sizeof(int)); free(a); 指針a在棧(stack)上，a指向申請的內存於堆(heap)上，free會釋放申請於堆上的內存，也就是a所指的記憶體區塊

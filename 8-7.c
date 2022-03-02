@@ -12,15 +12,16 @@ int prime(int n)
         int isPrime = 1;
         for (k = 1; k <= sqrt(j); k++)
         {
-            if (j%k == 0 && k!=1) {
+            if (j % k == 0 && k != 1)
+            {
                 isPrime = 0;
                 break;
             }
         }
         if (isPrime == 1)
-            {
-                i++;
-            }
+        {
+            i++;
+        }
     }
     return j;
 }
