@@ -1,0 +1,39 @@
+﻿f(n) = O(g(n)) 的=是屬於的意思，成立的條件是存在n0使得任何n>=n0，f(n)<=cg(n)
+O跟Ω分別是上界跟下界，有等號，o跟ω則沒有等號
+algorithm 1 runs in O(n)而algorithm 2 runs in O(n^2)，並不代表algorithm 1優於algorithm 2，因為2的O(n^2)可能不是tight bound，它tight upper bound是O(logn)比1還快
+分治法Divide-and-Conquer的好處就是
+    利於解決困難問題：解決最簡單的部分，再結合各個小答案成原題目的答案
+    利於找到高效演算法、更好的時間複雜度
+    適合平行運算(多核系統)
+    子程式與其data可以放在cache而不用時常去存取memory
+Master theorem 說T(n) = 1 for n<=1，aT(n/b)+f(n) for n>1，a>=1，b>1，如果存在常數
+    (1)ε>0，使f(n)=O(n^(logb(a) - ε)) 則T(n)=Θ(n^logb(a))
+    (2)ε>=0，使f(n)=Θ(n^logb(a)(logn)^ε) 則T(n)=Θ(n^logb(a)*logn)
+    (3)ε>0，使f(n)=Ω(n^(logb(a) + ε)) 同時存在c<1與夠大的n使af(n/b)<=cf(n)，則T(n)=Θ(f(n))
+Substitution method即把要證明的時間複雜度T(n)=O(g(n))以不等式的樣子代入recurrence relation中右式的T，再整理成跟欲證明的等式一模一樣，通常T(1)會成立故n>1也成立，於是得證
+Principle of optimality說最佳策略的subpolicy也會是子結構的最佳策略，如果principle of optimality不成立，就不能用dynamic programing
+DP Top-Down with memoization
+    better when some subproblems not be solved at all
+    solve only the required parts of subproblems
+DP Bottom-Up with Tabulation
+    better when all subproblems must be solved at least once
+    typically outperform top-down method by a constant factor 因為 no overhead for recursive calls and less overhead for maintaining the table
+Dived and conquer的子問題之間是獨立的
+DP的subproblems are dependent or overlapping
+Greedy algorithms的subproblems are without overlapping，一直做greedy choice就會讓子問題變小直到全部解決
+polynomial time要求時間複雜度為input length的polynomial，即O(l^k) for some k，如果複雜度是input value的polynomial但不是input length的polynomial則稱為pseudo-polynomial time，e.g. O(2^m)、m是input n的length或者說size
+Bellman-Ford algorithm：用來算s到全部u(任何s以外的vertex)的最小weights和(即帶權的最短距離)，令d[s]=0, d[u]=infinity，之後不斷relax圖中每個edge(relax: if d[v]>d[u]+w(u, v), let d[v]=d[u]+w(u, v))，V是此圖vertex數，relax達V-1輪就得到答案，時間複雜度O(VE)且能偵測negative cycles
+Directed Acyclic Graph簡稱DAG，即有向無環圖
+Lawler algorithm：把是DAG的input做topological sort(linear time)後，依照sort後的順序依序往後relax，經過一個phase的relax就能得到各點最短路徑，圖上n點m邊，time complexity O(V+E)
+Dijkstra algorithm：for graph without negative weights，找出s到任一點u的最短路徑，時間複雜度O(E+VlogV)
+P是可在(deterministically)多項式時間解掉的問題集合，NP是可在non-deterministically多項式時間解掉，或者說可在deterministically多項式時間verify
+P⊆NP所以一個問題可以在多項式時間解掉就一定可以在多項式時間驗證
+任何NP問題都能在deterministically polynomial time解掉(即P)嗎? it's open problem
+NP-Hard：難度大於等於NP中所有問題
+NP-Complete：難度等於NP中最難的那些問題
+問題A能reduce到問題B (寫成A <=p B)，等同於難度是A<=B
+通常我們會為想要把問題A轉換成已知解法的問題B，來知道怎麼解A，或是藉由找一個已知難度的A，因為B能reduce from A來得到B的難度下限
+Boolean satisfiability problem 屬於Decision problem，也是第一個被證明屬於NPC的問題，如果能證明它屬於P，那NP就=P，反之亦然
+如果一個問題可以在deterministically polynomial time解決，那任何NP問題也可以 => 此問題為NP-Hard
+證明L∈NP-Hard需要以下步驟：(1)找一個已知為NPC的問題C (2)建立一個reduction f把C裡每一個instance轉成L裡一個instance (即步驟3的向右箭)，這是個many-to-one或one-to-one(3)證明x∈C iff f(x)∈L (即向左箭也要成立) (4)證明f的轉換是polynomial time
+一個clique in G是指G裡的一個complete subgraph，意思就是一個G裡的一個subgraph，這subgraph裡每個vertex都有edge相連

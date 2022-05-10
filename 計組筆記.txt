@@ -1,0 +1,32 @@
+pipeline增加throughput但不減少latency
+static multiple issue (compiler approach)
+dynamic multiple issue (hardware approach)
+    超純量的最簡單版本
+    CPU決定每cycle是否要處理0, 1, 2...，避免structural and data hazards
+    可以不需要compiler scheduling
+    inorder fetch but out-of-order執行
+memory靠近processor叫upper level，反之叫lower level
+read miss時
+    read through是把memory讀到的資料直接傳到CPU，而no read through是memory讀完傳到cache，然後再從cache讀進CPU
+write hit時
+    write through會同時寫cache跟memory，write back是先寫進cache就好，然後cache裡會紀錄每個block的dirty bit，1代表memory還是髒資料，當cache中此block要被其他tag的取代時才寫回memory
+write miss時
+    no write allocation(write around)就只是從CPU寫進memory，而write allocation則是把資料讀進cache後，照你write hit的policy去做
+在cache block = 4 words之下，比起一個one-word-wide bank來說
+，一個4-word-wide的memory bank可以把data transfer time跟cycle time都減到1/4，4個one-word-wide的bank則能達成cycle time減到1/4，因同一block的資料是分散在bank1~bank4的
+現在的DRAM都是DDR SDRAM(Double Data Rate Synchronous DRAM)，意即資料的傳輸與clock同步且每個cycle的rising & falling edges都能傳資料
+cache通常用SRAM，有分I-cache和D-cache分別放instructions和data，每個instruction進來都一定會去access前者，若是load/store再進一步去access後者
+n-way set associative是說cache裡本來用index分變成set來分，每個set有n個等價的entries，associative增加，相同word下tag變長，index變短，address知道後就去相應的set找data，所以要n個comparator
+direct mapped可以當作1-way associative，每個set只有1個entry，所以退化成index
+fully associative允許memory block進入任一cache entry，但也需要在使用cache時能掃所有entries，即需要在每個entry都放上comparator，此法電路延遲最長，因此僅在特殊場合，如快取極小時，才會使用
+associative情況下，判斷哪個block要被replace會根據所謂psudo LRU，如Tree-PLRU或Bit-PLRU等
+virtual address高位是page number，低位是page offset
+page offset是說資料在這page裡的第幾號位，所以frame address是其page對應的frame address要再加上offset
+CPU會先從MMU裡的TLB(採用associative cache)找此page的位址轉換式(entry)，找不到再去page table找，又找不到(page fault)就把disk裡的這page搬來，然後page table填上這筆page，TLB也順便填上
+為減少page fault，採用多種LRU Approximation Algorithms，如reference bit法將用過的page調成1，然後OS會定期把1的調成0，每次OS要找victim時就找那些0的
+page table entry是每個page一個
+paging會造成memory要存龐大的page table，因此可用幾種方法縮小
+    bound register去限制跟調控table size
+    let pages to grow in both directions=>2 tables, 2 limit register, one for hash, one for stack
+    使用hashing => page table 跟physical pages一樣大小
+    multiple levels of page tables => e.g. two-level page table會先keep一級table，一級table每個entry對到一個二級table(是真正意義上的page table)，有用到哪個二級table才會把它存起來

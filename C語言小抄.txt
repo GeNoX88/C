@@ -1,9 +1,17 @@
 char a[5]; printf("%s", a); 會印出遇到'\0'前的所有字元，如果沒遇到'\0'則會印到遇到不可列印字元為止
 空字元'\0'的ASCII code為0
-'0'~'9'的ASCII code為48~57
-itoa()轉換數字成字串給變數 沒滿的地方會填入'\0'
+'0'~'9'的ASCII code為48~57 'A'~'Z'為65~90 'a'~'z'為97~122
+itoa()轉換數字成字串給代入的參數 沒滿的地方會填入'\0' 然後這是windows特有的函數 
+sprintf也能把數字或變數轉字串 且更廣為使用 要預留空間給'\0'
 atoi()會不斷偵測引數(字串或其位址)的數字字符，直到遇到非數字字符為止，而不依賴引數的記憶體空間做中止的判斷
 fopen搭配"w"和"a"後綴能自動建立新檔，搭配"r"則不會
 strcpy(str, "hello") 會把"hello"拷貝進str所在位址，而且是可以拷貝超過str宣告的記憶體長度
 strncpy(str, "hello", cnt) 會把"hello"中前cnt個字拷貝進str所在位址，不滿的全填上'\0'，字串跟cnt太長會使拷貝超過str宣告的記憶體長度
+如果要宣告字串以外的陣列指標時是以變數來宣告，如type *array，那必須先malloc一指定大小的空間給它方能使用，相反地如果要宣告陣列並同時初始化，請使用type array[size]
 int *a = (int *)malloc(sizeof(int)); free(a); 指針a在棧(stack)上，a指向申請的內存於堆(heap)上，free會釋放申請於堆上的內存，也就是a所指的記憶體區塊
+gcc 8.1.0 一般情況下 記憶體位置 陣列會在低位 其他在高位，但如果程式有讀取變數的address，編譯器會讓此變數宣告於低位
+struct的後面及裡面每一行都要加分號;
+int(*a)(int) 一個指向函數a的pointer，函數a吃一個int，返回一個int
+int(*a[10])(int) 一個含有10個指向函數的pointer的陣列，每個函數都吃一個int，返回一個int
+不用額外內存就能交換兩個數：int a = 1, b = 2; a = a ^ b; b = a ^ b; a = a ^ b;
+想建立一個陣列存放相似的函數時可以這樣：typedef void (*p)(void); p array[n]; array[0] = func1; // equivalent to array[0] = &func1;
