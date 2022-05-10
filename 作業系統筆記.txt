@@ -58,5 +58,9 @@ timer會週期性的發出interrupt，週期可以是固定也可以是可變(va
 process中有幾個threads就要有幾個program counters
 a process is the unit of work in a system，processes can potentially execute concurrently-by multiplexing on a single CPU core-or in parallel across multiple CPU cores
 講到process，OS負責(1)建立跟刪除user/system processes (2)CPU的process和threads排程 (3)processes的suspending跟resuming (4)提供process synchronization機制 (5)提供process communication機制
-
-
+講到memory，OS負責(1)追蹤有在使用的memory以及被哪個process使用(2)分配跟釋放memory(3)決定哪個process(或process的部分)和data要move in and out of memory
+一個file代表程式(包含source和object forms)和data之集合，data可以是numeric, alphabetic, alphanumeric, binary的，file可以是free form(e.g. text file)或formatted rigidly(fixed fields such as mp3等)
+講到file，OS負責(1)增刪檔案(2)增刪目錄來組織檔案(3)支援用來操作檔案跟目錄的原語(primitive)(4)mapping files onto mass storage(5)備份檔案到non volatile 儲存media
+講到mass-storage，OS負責次要存儲的(1)mounting and unmounting (2)free-space管理 (3)storage allocation (4)disk scheduling (5)partitioning (6)protection
+register是種programable internal cache，register-allocation & register-replacement algorithm由compiler決定，cache的使用由hardware決定
+cache coherency是說不同CPU的local cache改了變數的值，其餘的CPU的local cache要能立刻更新此值
