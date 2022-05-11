@@ -64,3 +64,5 @@ a process is the unit of work in a system，processes can potentially execute co
 講到mass-storage，OS負責次要存儲的(1)mounting and unmounting (2)free-space管理 (3)storage allocation (4)disk scheduling (5)partitioning (6)protection
 register是種programable internal cache，register-allocation & register-replacement algorithm由compiler決定，cache的使用由hardware決定
 cache coherency是說不同CPU的local cache改了變數的值，其餘的CPU的local cache要能立刻更新此值
+OS的一個目的是對user hide the peculiarities(古怪) of 特定硬體裝置，例如在UNIX中，I/O devices的I/O subsystem能對OS隱藏自己，只有device driver知道這device的特別
+I/O subsystem由下列組成 (1) 一個memory-management component 包含buffering, caching, and spooling (2) a general device-driver interface (3) derivers for specific hardware devices
